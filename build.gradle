@@ -4,6 +4,11 @@ buildscript {
     }
 }
 
+def artifactoryUrl = "http://example.com"
+def artifactoryReleaseUrl = "http://example.com"
+def artifactoryUser = "user"
+def artifactoryPassword = "password"
+
 repositories {
     mavenCentral()
     maven {
