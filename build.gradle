@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        credentials {
+            username artifactoryUser
+            password artifactoryPassword
+        }
+        url artifactoryUrl
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+group 'com.scopely.build'
+version '0.1.1-SNAPSHOT'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+
+uploadArchives {
+    configuration = configurations.archives
+
+    repositories {
+        // the maven plugin features this deployer
+        mavenDeployer {
+            // we deploy to the release repository in this case
+            repository(url: "https://scopelybin.artifactoryonline.com/scopelybin/libs-snapshots-local/") {
+                authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+            pom.project {
+                artifactId 'unity-gradle-plugin'
+                description 'Gradle plugin to control Unity builds'
+                name 'unity-gradle-plugin'
+            }
+        }
+    }
+}
+
+configurations {
+    archives.extendsFrom configurations.default
+}
